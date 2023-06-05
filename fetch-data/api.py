@@ -5,6 +5,19 @@ import pandas as pd
 
 url = 'https://gutendex.com/books?languages=en,fr'
 
+def save_last_next(next):
+    ''' Save last next token to file '''
+    with open('raw_data/last_next/last_next.txt', 'w') as file:
+        file.write(next)
+
+def load_last_next():
+    ''' Load last next token from file '''
+    with open('raw_data/last_next/last_next.txt', 'r') as file:
+        return file.read()
+
+# save starting url to next token file
+save_last_next(url)
+
 def dl_books_from_page(url):
     ''' Download json of the page and return books and next token'''
     response = requests.get(url)
@@ -15,6 +28,16 @@ def dl_books_from_page(url):
         return books, next
     else:
         return None, None
+
+def save_last_next(next):
+    ''' Save last next token to file '''
+    with open('raw_data/last_next/last_next.txt', 'w') as file:
+        file.write(next)
+
+def load_last_next():
+    ''' Load last next token from file '''
+    with open('raw_data/last_next/last_next.txt', 'r') as file:
+        return file.read()
 
 def parse_books_from_json(json):
     ''' Parse books from json to dict '''
@@ -44,9 +67,10 @@ def save_book_from_url(url):
 
 def download_all_books():
     ''' Download all books from the website, save them as .txt files and return a dataframe with the books metadata'''
-    next_page = url
+    next_page = load_last_next() # load last next token from file
     while next_page:
-        books, next_page = dl_books_from_page(next_page)
+        books, next_page = dl_books_from_page(next_page) # download books and get next from the page
+        save_last_next(next_page) # save next to file
         if books:
             parsed_books = parse_books_from_json(books)
             for book in parsed_books:
