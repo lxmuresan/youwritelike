@@ -1,21 +1,26 @@
 import pandas as pd
 import os
 
+basedir = os.path.dirname(os.path.dirname(os.path.dirname(__file__))) # /Users/nicolas/code/Nico404/youwritelike/youwritelike/pipe/chunks
+most_famous_path = os.path.join(basedir, 'fetch-data/raw_data/books_most_famous')
+csv_path = os.path.join(basedir, 'fetch-data/raw_data/csv/books.csv')
+
+
 def get_books_from_famous_authors():
     '''Return a list of all files from raw_data/books_most_famous'''
-    return os.listdir('fetch-data/raw_data/books_most_famous')
+    return os.listdir(most_famous_path)
 
 def get_author_name(filename):
     '''Get author name from filename'''
     filename = filename.split('.')[0]    # remove extension
-    with open('fetch-data/raw_data/csv/books.csv', 'r') as file:
+    with open(csv_path, 'r') as file:
         for line in file:
             if filename in line:
                 return line.split(',')[2] # return author name
 
 def read_book(book_id):
     '''Read book from file'''
-    file_name = 'fetch-data/raw_data/books_most_famous/' + book_id
+    file_name = os.path.join(most_famous_path, book_id)
     with open(file_name, 'r') as file:
         return file.read()
 
@@ -39,5 +44,4 @@ def save_all_books_to_dataframe():
     df = pd.DataFrame(data)
     return df
 
-# print(save_all_books_to_dataframe())
-print(get_books_from_famous_authors())
+print(save_all_books_to_dataframe())
