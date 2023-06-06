@@ -3,7 +3,8 @@ import os
 from bs4 import BeautifulSoup
 import pandas as pd
 
-url = 'https://gutendex.com/books?languages=en,fr'
+# Starting URL to put in last_next if first time run
+# url = 'https://gutendex.com/books?languages=en,fr'
 
 def save_last_next(next):
     ''' Save last next token to file '''
@@ -14,9 +15,6 @@ def load_last_next():
     ''' Load last next token from file '''
     with open('raw_data/last_next/last_next.txt', 'r') as file:
         return file.read()
-
-# save starting url to next token file
-save_last_next(url)
 
 def dl_books_from_page(url):
     ''' Download json of the page and return books and next token'''
@@ -28,16 +26,6 @@ def dl_books_from_page(url):
         return books, next
     else:
         return None, None
-
-def save_last_next(next):
-    ''' Save last next token to file '''
-    with open('raw_data/last_next/last_next.txt', 'w') as file:
-        file.write(next)
-
-def load_last_next():
-    ''' Load last next token from file '''
-    with open('raw_data/last_next/last_next.txt', 'r') as file:
-        return file.read()
 
 def parse_books_from_json(json):
     ''' Parse books from json to dict '''
@@ -89,10 +77,3 @@ def download_all_books():
                     file.write(f"{book['id']},{title},{authors},{subjects_str},{languages},{formats},{book['download_count']}\n")
 
 download_all_books()
-
-
-# print(dl_books_from_page(url))
-# print("*******************")
-# print(parse_books_from_json(dl_books_from_page(url)[0]))
-# print("*******************")
-# print(save_book_from_url('https://www.gutenberg.org/ebooks/64317.txt.utf-8'))
