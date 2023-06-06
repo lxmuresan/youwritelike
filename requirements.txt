@@ -121,7 +121,6 @@ oauthlib==3.2.2
 opt-einsum==3.3.0
 overrides==7.3.1
 packaging==23.1
-pandas==1.5.3
 pandocfilters==1.5.0
 parso==0.8.3
 pexpect==4.8.0
@@ -161,9 +160,9 @@ stack-data==0.6.2
 tensorboard==2.10.1
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
-tensorflow==2.10.0
-tensorflow-estimator==2.10.0
-tensorflow-io-gcs-filesystem==0.32.0
+tensorflow-macos==2.10.0; sys_platform == 'darwin' and 'ARM' in platform_version # Mac M-chips
+tensorflow==2.10.0; sys_platform == 'darwin' and 'ARM' not in platform_version # Mac Intel chips
+tensorflow==2.10.0; sys_platform != 'darwin' # Windows & Ubuntu Intel chips
 termcolor==2.3.0
 terminado==0.17.1
 threadpoolctl==3.1.0
